@@ -73,14 +73,32 @@ class RGB(object):
       self._green = green
       self._blue = blue
 
+   @classmethod
+   def clone(cls, instance):
+      return cls(instance.red,instance.green,instance.blue)
+
    @property
    def red(self):
       return self._red
+   @red.setter
+   def red(self,r):
+      self._red=r
    
    @property
    def green(self):
       return self._green
+   @green.setter
+   def green(self,g):
+      self._green=g
    
    @property
    def blue(self):
       return self._blue
+   @blue.setter
+   def blue(self,b):
+      self._blue=b
+
+   def list(self):
+      return [self._red,self._green,self._blue]
+   def tuple(self):
+      return (self._red,self._green,self._blue)
