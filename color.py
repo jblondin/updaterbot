@@ -12,10 +12,10 @@ class RGBError(Exception):
 
 class RGB(object):
    '''
-   Base RGB class 
+   Base RGB class for 8-bit colors
    '''
 
-   def __init__(self,red=0,green=0,blue=0,string=""):
+   def __init__(self,red=-1,green=-1,blue=-1,string=""):
       '''
       RGB constructor
       '''
@@ -56,19 +56,16 @@ class RGB(object):
          raise RGBError("Color parse error: invalid hexcode: {0}".format(string))
 
       rgb_split = [string[0:2],string[2:4],string[4:6]]
-      self.construct_from_rgb(*[int(color_str,16) for color_str in rgb_split])
+      try:
+         self.construct_from_rgb(*[int(color_str,16) for color_str in rgb_split])
+      except ValueError:
+         raise RGBError("Color parse error: invalid hexcode: {0}".format(string))
 
-   def validate_color(self,c,name):
-      if c < 0 or c > 255:
-         raise RGBError("Color parse error: {0} value out of range ({1}). Color values must be "
-            "between 0 and 255 (inclusive)".format(name,c))
+   def is_valid(self):
+      return self._red >= 0 and self._red < 256 and self._green >= 0 and self._green < 256 and \
+         self._blue >= 0 and self._blue < 256
 
    def construct_from_rgb(self,red,green,blue):
-
-      self.validate_color(red,"red")
-      self.validate_color(green,"green")
-      self.validate_color(blue,"blue")
-
       self._red = red
       self._green = green
       self._blue = blue
@@ -98,7 +95,15 @@ class RGB(object):
    def blue(self,b):
       self._blue=b
 
+   def set(self,r,g,b):
+      self._red=r
+      self._green=g
+      self._blue=b
+
    def list(self):
       return [self._red,self._green,self._blue]
    def tuple(self):
       return (self._red,self._green,self._blue)
+
+   def __str__(self):
+      return "({0},{1},{2})".format(self._red,self._green,self._blue)
