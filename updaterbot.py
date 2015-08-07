@@ -39,7 +39,9 @@ class StoredRGB(RGB,storage.StorageMixin):
 
 class UpdaterBot(TwitterBot):
 
-   def on_subclass_init(self,**kwargs):
+   def __init__(self,*args,**kwargs):
+      super(UpdaterBot,self).__init__(*args,**kwargs)
+
       self._step_size=10
       if 'step_size' in kwargs:
          self._step_size=kwargs['step_size']
